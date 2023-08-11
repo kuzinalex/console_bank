@@ -137,19 +137,6 @@ public class TransactionDao {
 		connection.commit();
 	}
 
-	public Transaction getTransactionById(int id) throws SQLException {
-		String query = "SELECT * FROM Transaction WHERE id = ?";
-		try (PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setInt(1, id);
-			try (ResultSet resultSet = statement.executeQuery()) {
-				if (resultSet.next()) {
-					return ResultMapper.mapResultSetToTransaction(resultSet);
-				}
-			}
-		}
-		return null;
-	}
-
 	public List<Transaction> getTransactionsByClientId(int id) throws SQLException {
 		List<Transaction> transactions = new ArrayList<>();
 		String query = "SELECT * FROM Transaction "
@@ -167,26 +154,6 @@ public class TransactionDao {
 			}
 		}
 		return transactions;
-	}
-
-	public void updateTransaction(Transaction transaction) throws SQLException {
-		String query = "UPDATE Transaction SET amount = ?, transaction_date = ?, source_account_id = ?, target_account_id = ? WHERE id = ?";
-		try (PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setBigDecimal(1, transaction.getAmount());
-			statement.setTimestamp(2, Timestamp.valueOf(transaction.getTransactionDate()));
-			statement.setInt(3, transaction.getSourceAccountId());
-			statement.setInt(4, transaction.getTargetAccountId());
-			statement.setInt(5, transaction.getId());
-			statement.executeUpdate();
-		}
-	}
-
-	public void deleteTransaction(int id) throws SQLException {
-		String query = "DELETE FROM Transaction WHERE id = ?";
-		try (PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setInt(1, id);
-			statement.executeUpdate();
-		}
 	}
 
 }

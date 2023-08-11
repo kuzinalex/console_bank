@@ -48,20 +48,6 @@ public class BankDao {
 		}
 	}
 
-	public Bank getBankById(int id) throws SQLException {
-
-		String query = "SELECT * FROM Bank WHERE id = ?";
-		try (PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setInt(1, id);
-			try (ResultSet resultSet = statement.executeQuery()) {
-				if (resultSet.next()) {
-					return ResultMapper.mapResultSetToBank(resultSet);
-				}
-			}
-		}
-		return null;
-	}
-
 	public List<Bank> getAllBanks() throws SQLException {
 
 		List<Bank> banks = new ArrayList<>();

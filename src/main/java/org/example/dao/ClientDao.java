@@ -82,19 +82,6 @@ public class ClientDao {
 
 	}
 
-	public Client getClientById(int id) throws SQLException {
-		String query = "SELECT * FROM Client WHERE id = ?";
-		try (PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setInt(1, id);
-			try (ResultSet resultSet = statement.executeQuery()) {
-				if (resultSet.next()) {
-					return ResultMapper.mapResultSetToClient(resultSet);
-				}
-			}
-		}
-		return null;
-	}
-
 	public List<Client> getClientsByBankId(int bankId) throws SQLException {
 		List<Client> clients = new ArrayList<>();
 		String query = "SELECT DISTINCT client.id, client.name, client.type FROM Client "

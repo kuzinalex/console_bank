@@ -44,18 +44,6 @@ public class AccountDao {
 		}
 	}
 
-	public Account getAccountById(int id) throws SQLException {
-		String query = "SELECT * FROM Account WHERE id = ?";
-		try (PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setInt(1, id);
-			try (ResultSet resultSet = statement.executeQuery()) {
-				if (resultSet.next()) {
-					return ResultMapper.mapResultSetToAccount(resultSet);
-				}
-			}
-		}
-		return null;
-	}
 
 	public List<Account> getAccountsByClientId(int clientId) throws SQLException {
 		List<Account> accounts = new ArrayList<>();
@@ -69,17 +57,6 @@ public class AccountDao {
 			}
 		}
 		return accounts;
-	}
-
-	public void updateAccount(Account account) throws SQLException {
-		String query = "UPDATE Account SET  currency = ?, balance = ?, client_id = ? WHERE id = ?";
-		try (PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setString(1, account.getCurrency());
-			statement.setBigDecimal(2, account.getBalance());
-			statement.setInt(3, account.getClientId());
-			statement.setInt(4, account.getId());
-			statement.executeUpdate();
-		}
 	}
 
 	public void deleteAccount(int id) throws SQLException {
